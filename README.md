@@ -1,65 +1,79 @@
-# 📄 Exam JSON Generator
+# 📄 Exam JSON Generator (Preproduction)
 
-**Exam JSON Generator** es una herramienta que convierte documentos `.DOCX` en archivos `.JSON`, siempre que sigan una estructura concreta predefinida.
+**Exam JSON Generator** is a tool that converts `.DOCX` documents into `.JSON` files, provided they follow a specific predefined structure.
 
 ---
 
-## 📐 Formato de entrada
+## 📐 Input Format
 
-El documento `.docx` debe seguir el formato indicado en:
+The `.docx` document must follow the format shown in:
 
 ```
 exam_json_generator/ejemplo_formato_valido.docx
 ```
-**poetry run exam_json_generator --show-example**
 
-> ⚠️ Es **muy importante** respetar los:
-> - Saltos de línea
-> - Espacios
-> - Tildes
-> - Ubicación exacta de las etiquetas
+You can preview the structure using:
+```bash
+poetry run exam_json_generator --show-example
+```
 
-Una alteración en cualquiera de estos elementos podría provocar una interpretación incorrecta.
+> ⚠️ It is **very important** to preserve:
+> - Line breaks
+> - Spaces
+> - Accents
+> - Exact position of the labels
+
+Any deviation might result in incorrect interpretation.
 
 ---
 
-## 🚀 ¿Cómo se ejecuta?
+## 🚀 How to Run
 
-1. Entra en el entorno Poetry:
+1. Enter the Poetry virtual environment:
 ```bash
 poetry shell
 ```
 
-2. Ejecuta el generador con:
+2. Run the generator with:
 ```bash
-poetry run exam_json_generator <carpeta_de_entrada> <carpeta_de_salida>
+poetry run exam_json_generator <input_folder> <output_folder>
 ```
 
-Ejemplo:
+Example:
 ```bash
 poetry run exam_json_generator exam_json_generator/assets exam_json_generator/output
 ```
 
 ---
 
-## 📂 Estructura esperada
+## 📂 Expected Structure
 
-- **Entrada:** debes indicar por argumento la carpeta donde se encuentran los `.docx`.
-- **Salida:** debes indicar por argumento la carpeta donde se guardarán los `.json`.
+- **Input:** folder containing the `.docx` files (passed as first argument).
+- **Output:** folder where the resulting `.json` files will be saved (second argument).
 
-Ambas rutas deben pasarse como argumentos al ejecutar el comando.
+Both paths must be passed as arguments.
 
 ---
 
-## ✅ Requisitos
+## ✅ Requirements
 
-- Archivos de entrada en formato `.docx`
+- Input files in `.docx` format
 - Python 3.10+
-- [Poetry](https://python-poetry.org/docs/) instalado
+- [Poetry](https://python-poetry.org/docs/) installed
 
 ---
 
-## 🧪 Validación automática
+## 🧪 Automatic Validation
 
-- El programa valida si la carpeta de entrada y salida existen.
-- Si la carpeta de salida no existe, se creará automáticamente.
+- The program validates if the input and output folders exist.
+- If the output folder doesn't exist, it will be created automatically.
+
+---
+
+## ⚠️ Preproduction Notice
+
+This tool is currently in **preproduction phase**. If you cannot run it via Poetry, you may alternatively install it via Portage using:
+
+```
+emerge dev-utils/exam_json_generator::j-overlay
+```
