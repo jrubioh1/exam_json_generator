@@ -1,6 +1,7 @@
 from docx import Document
 import json
 import os
+from termcolor import colored
 
 
 
@@ -39,13 +40,25 @@ def questions_theme_text_dict(questions_text):
     # print(questions_text, 'entrada')
     clean_questions_texts='\n'.join([line for line in questions_text.splitlines() if '{no-use}' not in line])
     json_questions=[]
-    split_questions=clean_questions_texts.split('{question}')
+    try:
+        split_questions=clean_questions_texts.split('{question}')
+    except:
+        print(colored('REVIEW FORMAT QUESTION, LEFT {QUESTION} TAG'+ name_file, 'red'))
+        print(colored(clean_questions_texts, 'yellow'))
+        raise ValueError
+
+
 
     while len(split_questions)>1:
+        try:
+            split_question=split_questions[0].split('{answer}')
+        except:
+            print(colored('REVIEW FORMAT QUESTION, LEFT {answer} TAG'+ name_file, 'red'))
+            print(colored(split_question, 'yellow'))
+            raise ValueError
 
-        split_question=split_questions[0].split('{answer}')
+
         question=split_question[0].replace('\n','')
-        print(question)
         answers=split_question[1]
 
         #para poner un limite al while, borra contenido y genera un nuevo split para avanzar cuando acabe
@@ -56,10 +69,15 @@ def questions_theme_text_dict(questions_text):
         dict_tmp['question']=question     
         dict_tmp['answers']=[]
         for answer in answers.splitlines():
-            print(question,'\n',answers)
-            print(answer.split('.-'))
             if answer not in ['', '\n', '\t']:
-                answer_cleaned=answer.split('.-')[1].replace('{question}', '')
+                try:
+                    answer_cleaned=answer.split('.-')[1].replace('{question}', '')
+                except:
+                    print(colored(split_questions, 'cyan'))
+                    print(colored(question +'\n' +answers, 'yellow'))
+                    print(colored(answer.split('.-'), 'yellow'))
+                    print(colored('REVIEW FORMAT ANSWER, LEFT .-, or left other tag at the top question, ({question}, {answer})'+ name_file, 'red'))
+                    raise ValueError
                 if '*' in answer_cleaned:
 
                     dict_tmp['answers'].append({answer_cleaned.replace('*',''):True})
@@ -94,7 +112,7 @@ def get_questions(text_body, themes):
     if len(themes)!=0:    
         for theme in themes:
 
-            print('{'+theme+'}')
+            # print('{'+theme+'}')
             # print(theme_questions_text.split('{'+theme+'}')[0])
 
             text_theme=theme_questions_text.split('{'+theme+'}')[0]
@@ -111,6 +129,8 @@ def get_questions(text_body, themes):
 def extractor_json( origin_dir, output_dir):
     for root, dirnames,files in os.walk(origin_dir):
         for file in files:
+            global name_file
+            name_file=file
             if file.endswith('.docx'):
                 final_json={}
                 doc= Document(f'{root}/{file}')
