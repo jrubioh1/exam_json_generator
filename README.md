@@ -70,10 +70,10 @@ Both paths must be passed as arguments.
 
 ---
 
-## ⚠️ Preproduction Notice
+## ⚠️ Production mode
 
-This tool is currently in **preproduction phase**. If you cannot run it via Poetry, you may alternatively install it via Portage using:
+You may alternatively install it via PYPi using:
 
 ```
-emerge dev-utils/exam_json_generator::j-overlay
+pip install exam_json_generator
 ```
