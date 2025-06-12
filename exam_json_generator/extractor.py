@@ -29,7 +29,7 @@ def get_themes(text_body, result_array=True):
 
     if result_array:
         section_array=sections_text.split('{theme}')
-        return list(map(lambda tema: tema.replace('\n', '').replace('{last-theme} ', '').strip(), section_array)) # para limpiar cualquier salto de linea, etiqueta no servible o espacios de mas que tenga el texto
+        return list(map(lambda tema: tema.replace('\n', '').replace('{last-theme}', '').strip(), section_array)) # para limpiar cualquier salto de linea, etiqueta no servible o espacios de mas que tenga el texto
    
     return sections_text
 
@@ -45,6 +45,7 @@ def questions_theme_text_dict(questions_text):
 
         split_question=split_questions[0].split('{answer}')
         question=split_question[0].replace('\n','')
+        print(question)
         answers=split_question[1]
 
         #para poner un limite al while, borra contenido y genera un nuevo split para avanzar cuando acabe
@@ -55,6 +56,8 @@ def questions_theme_text_dict(questions_text):
         dict_tmp['question']=question     
         dict_tmp['answers']=[]
         for answer in answers.splitlines():
+            print(question,'\n',answers)
+            print(answer.split('.-'))
             if answer not in ['', '\n', '\t']:
                 answer_cleaned=answer.split('.-')[1].replace('{question}', '')
                 if '*' in answer_cleaned:
@@ -91,7 +94,7 @@ def get_questions(text_body, themes):
     if len(themes)!=0:    
         for theme in themes:
 
-            # print('{'+theme+'}')
+            print('{'+theme+'}')
             # print(theme_questions_text.split('{'+theme+'}')[0])
 
             text_theme=theme_questions_text.split('{'+theme+'}')[0]
