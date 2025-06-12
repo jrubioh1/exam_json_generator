@@ -6,8 +6,13 @@ from termcolor import colored
 
 
 def extract_text(text,split_text, index0=None, index1=None, ):
-    processed=text.split(split_text)
-
+    try:
+        if split_text not in text:
+            raise ValueError
+        processed=text.split(split_text)
+    except:
+        print(colored(F'REVIEW TAG {split_text} on {name_file}, may be left it or it have been witten bad ', 'red'))
+        raise ValueError
     if index0 and index1:
         processed=processed[index0:index1]
 
@@ -43,7 +48,7 @@ def questions_theme_text_dict(questions_text):
     try:
         split_questions=clean_questions_texts.split('{question}')
     except:
-        print(colored('REVIEW FORMAT QUESTION, LEFT {QUESTION} TAG'+ name_file, 'red'))
+        print(colored('REVIEW FORMAT QUESTION, LEFT {question} TAG'+ name_file, 'red'))
         print(colored(clean_questions_texts, 'yellow'))
         raise ValueError
 
