@@ -1,9 +1,9 @@
 [project]
 name = "exam_json_generator"
-version = "1.0.1"
+version = "1.0.2"
 description = ""
 authors = [
-    {name = "jrubioh",email = "jrubio@pm.me"}
+    {name = "jrubioh",email = "jrubio@guardiacivil.es"}
 ]
 license = {text = "GLP-3"}
 readme = "README.md"
