@@ -145,6 +145,7 @@ def extractor_json( origin_dir, output_dir):
                 themes=get_themes(body)
                 questions=get_questions(body, themes)
                 final_json['title']=title
+                final_json['themes']=themes
                 final_json['questions']=questions
 
                 path_final=os.path.join(output_dir,f'{file.replace('.docx', '')}.json')
