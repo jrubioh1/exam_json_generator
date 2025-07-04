@@ -37,7 +37,7 @@ def get_themes(text_body, result_array=True):
         
 
         result_themes=[]
-        if '{theme}' in sections_text:
+        if '{theme}' in sections_text or '{last-theme}' in sections_text:
             section_array=sections_text.split('{theme}')
             result_themes=list(map(lambda tema: tema.replace('\n', '').replace('{last-theme}', '').strip(), section_array)) # para limpiar cualquier salto de linea, etiqueta no servible o espacios de mas que tenga el texto
        
