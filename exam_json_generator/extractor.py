@@ -114,8 +114,6 @@ def get_questions(text_body, themes):
 
     if len(split_without_theme)>1:
         without_theme_question_text=split_without_theme[0]  
-
-    if len(split_without_theme) > 1   :
         theme_questions_text=split_without_theme[1] 
     else: 
         theme_questions_text=split_without_theme[0]
