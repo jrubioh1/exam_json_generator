@@ -108,9 +108,8 @@ def questions_theme_text_dict(questions_text):
     return json_questions
 
 def get_questions(text_body, themes):
-    questions_text=extract_text(text_body, '{themes}',index0=1)
 
-    theme_questions_text=questions_text
+    theme_questions_text=extract_text(text_body, '{themes}',index0=1)
 
     json_questions={}
 
