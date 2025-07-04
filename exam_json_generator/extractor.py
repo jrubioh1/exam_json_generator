@@ -34,15 +34,16 @@ def get_themes(text_body, result_array=True):
     sections_text=extract_text(text_body, '{themes}',index1=1)
 
     if result_array:
-        
 
-        result_themes=[]
-        if '{theme}' in sections_text or '{last-theme}' in sections_text:
-            section_array=sections_text.split('{theme}')
-            result_themes=list(map(lambda tema: tema.replace('\n', '').replace('{last-theme}', '').strip(), section_array)) # para limpiar cualquier salto de linea, etiqueta no servible o espacios de mas que tenga el texto
-       
+        result_themes=[]        
         if '{WITHOUT-THEME}' in text_body:
             result_themes.append('WITHOUT-THEME')
+
+        if '{theme}' in sections_text or '{last-theme}' in sections_text:
+            section_array=sections_text.split('{theme}')
+            result_themes+=list(map(lambda tema: tema.replace('\n', '').replace('{last-theme}', '').strip(), section_array)) # para limpiar cualquier salto de linea, etiqueta no servible o espacios de mas que tenga el texto
+       
+
         return result_themes
    
     
@@ -109,31 +110,23 @@ def questions_theme_text_dict(questions_text):
 def get_questions(text_body, themes):
     questions_text=extract_text(text_body, '{themes}',index0=1)
 
-    split_without_theme=questions_text.split('{WITHOUT-THEME}')
-    without_theme_question_text=None
-
-    if len(split_without_theme)>1:
-        without_theme_question_text=split_without_theme[0]  
-        theme_questions_text=split_without_theme[1] 
-    else: 
-        theme_questions_text=split_without_theme[0]
+    theme_questions_text=questions_text
 
     json_questions={}
-    if without_theme_question_text:
-        json_questions['WITHOUT-THEME']=questions_theme_text_dict(without_theme_question_text)
-    if len(themes)!=0:    
+
+    if len(themes)!=0: 
         for theme in themes:
 
-            # print('{'+theme+'}')
-            # print(theme_questions_text.split('{'+theme+'}')[0])
+                # print('{'+theme+'}')
+                # print(theme_questions_text.split('{'+theme+'}')[0])
 
-            text_theme=theme_questions_text.split('{'+theme+'}')[0]
-            json_questions[theme]=questions_theme_text_dict(text_theme)
+                text_theme=theme_questions_text.split('{'+theme+'}')[0]
+                json_questions[theme]=questions_theme_text_dict(text_theme)
 
-            # print(text_theme+'{'+theme+'}', '\n\n\n\n\n\n')
+                # print(text_theme+'{'+theme+'}', '\n\n\n\n\n\n')
 
-            theme_questions_text=theme_questions_text.replace(text_theme+'{'+theme+'}', '')
-            # print(len(theme_questions_text))
+                theme_questions_text=theme_questions_text.replace(text_theme+'{'+theme+'}', '')
+                # print(len(theme_questions_text))
             
     return json_questions
 
