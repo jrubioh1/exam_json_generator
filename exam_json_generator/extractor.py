@@ -2,7 +2,7 @@ from docx import Document
 import json
 import os
 from termcolor import colored
-
+import re
 
 
 def extract_text(text,split_text, index0=None, index1=None, ):
@@ -73,7 +73,7 @@ def questions_theme_text_dict(questions_text):
             raise ValueError
 
 
-        question=split_question[0].replace('\n','')
+        question = re.sub(r'^\d{1,3}\.\s*', '', split_question[0].replace('\n',''))
         answers=split_question[1]
 
         #para poner un limite al while, borra contenido y genera un nuevo split para avanzar cuando acabe
@@ -135,18 +135,25 @@ def extractor_json( origin_dir, output_dir):
         for file in files:
             global name_file
             name_file=file
-            if file.endswith('.docx'):
-                final_json={}
-                doc= Document(f'{root}/{file}')
-                text_docx='\n'.join([parrafo.text for parrafo in doc.paragraphs])
-                title=get_title(text_docx)
-                body=get_body(text_docx)
-                themes=get_themes(body)
-                questions=get_questions(body, themes)
-                final_json['title']=title
-                final_json['themes']=themes
-                final_json['questions']=questions
 
-                path_final=os.path.join(output_dir,f'{file.replace('.docx', '')}.json')
-                with open(path_final, 'w', encoding='UTF-8') as f:
-                    json.dump(final_json,f,ensure_ascii=False, indent=2)
+            if file.endswith('.docx'):
+                doc = Document(os.path.join(root, file))
+                text_docx = '\n'.join([parrafo.text for parrafo in doc.paragraphs])
+            elif file.endswith('.txt'):
+                with open(os.path.join(root, file), encoding="utf-8") as f:
+                    text_docx = f.read()
+            else:
+                continue
+
+            final_json={}
+            title=get_title(text_docx)
+            body=get_body(text_docx)
+            themes=get_themes(body)
+            questions=get_questions(body, themes)
+            final_json['title']=title
+            final_json['themes']=themes
+            final_json['questions']=questions
+
+            path_final=os.path.join(output_dir,f'{file.replace('.docx', '')}.json')
+            with open(path_final, 'w', encoding='UTF-8') as f:
+                json.dump(final_json,f,ensure_ascii=False, indent=2)
